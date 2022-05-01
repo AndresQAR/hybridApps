@@ -1,9 +1,22 @@
 import fs from 'fs'
 
-export async function find () {
+export async function find (deleted = false) {
   return fs.promises.readFile('./data/students.json')
-    .then(function (data) {
-      return JSON.parse(data.toString())
+    .then(function (students) {
+      return JSON.parse(students.toString())
+    })
+    .then(function (students) {
+      if (deleted) {
+        return students
+      }
+      let noDeletedStudents = []
+
+      for (let i = 0; i < students.length; i++) {
+        if (!students[i].deleted) {
+          noDeletedStudents.push(students[i])
+        }
+      }
+      return noDeletedStudents
     })
     .catch(function (data) {
       return []
@@ -23,7 +36,7 @@ export async function findByID (id) {
 
 export async function create (student) {
   let newStudent = null
-  return find()
+  return find(true)
     .then(function (students) {
       newStudent = { ...student, id: students.length + 1 }
       students.push(newStudent)
@@ -34,4 +47,23 @@ export async function create (student) {
     })
 }
 
-export default { findByID, find, create }
+export async function remove (id) {
+  let student = null
+  return find(true)
+    .then(function (students) {
+      for (let i = 0; i < students.length; i++) {
+        if (students[i].id === id) {
+          student = students[i]
+        }
+      }
+      if (student) {
+        student.deleted = true
+        return fs.promises.writeFile('./data/students.json', JSON.stringify(students))
+      }
+    })
+    .then(function () {
+      return student
+    })
+}
+
+export default { findByID, find, create, remove }

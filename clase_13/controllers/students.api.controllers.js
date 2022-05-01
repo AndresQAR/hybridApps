@@ -31,8 +31,25 @@ function create (req, res) {
     })
 }
 
+function remove (req, res) {
+  const id = parseInt(req.params.studentId)
+
+  studentsModel.remove(id)
+    .then(function (student) {
+      if (student) {
+        res.status(200).json(student)
+      } else {
+        res.status(404).json({ message: `Student #${id} cannot be found` })
+      }
+    })
+    .catch(function (err) {
+      res.status(500).json({ err })
+    })
+}
+
 export default {
   getByID,
   getAll,
-  create
+  create,
+  remove
 }

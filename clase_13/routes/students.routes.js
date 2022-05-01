@@ -13,5 +13,6 @@ route.post('/save', studentsControllers.create)
 route.get('/api/students/:studentId', studentsApiControllers.getByID)
 route.get('/api/students', studentsApiControllers.getAll)
 route.post('/api/students', studentsApiControllers.create)
+route.delete('/api/students/:studentId', studentsApiControllers.remove)
 
 export default route
