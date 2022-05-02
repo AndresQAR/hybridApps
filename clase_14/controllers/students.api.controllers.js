@@ -47,9 +47,27 @@ function remove (req, res) {
     })
 }
 
+function replace (req, res) {
+  const id = parseInt(req.params.studentId)
+  const studentData = req.body
+
+  studentsModel.replace(id, studentData)
+    .then(function (student) {
+      if (student) {
+        res.status(200).json(student)
+      } else {
+        res.status(404).json({ message: `Student #${id} cannot be found` })
+      }
+    })
+    .catch(function (err) {
+      res.status(500).json({ err })
+    })
+}
+
 export default {
   getByID,
   getAll,
   create,
-  remove
+  remove,
+  replace
 }

@@ -66,4 +66,27 @@ export async function remove (id) {
     })
 }
 
-export default { findByID, find, create, remove }
+export async function replace (id, studentData) {
+  let student = null
+  return find()
+    .then(function (students) {
+      let index = -1
+      for (let i = 0; i < students.length; i++) {
+        if (students[i].id === id) {
+          index = i
+        }
+      }
+      if (index !== -1) {
+        student = students[index] = {
+          ...studentData,
+          id
+        }
+        return fs.promises.writeFile('./data/students.json', JSON.stringify(students))
+      }
+    })
+    .then(function () {
+      return student
+    })
+}
+
+export default { findByID, find, create, remove, replace }
