@@ -9,7 +9,7 @@ export async function find (deleted = false) {
       if (deleted) {
         return students
       }
-      let noDeletedStudents = []
+      const noDeletedStudents = []
 
       for (let i = 0; i < students.length; i++) {
         if (!students[i].deleted) {
