@@ -1,4 +1,6 @@
 import fs from 'fs'
+import MongoDB from 'mongodb'
+const client = new MongoDB.MongoClient('mongodb://localhost:27017')
 
 export async function find (deleted = false) {
   return fs.promises.readFile('./data/students.json')
