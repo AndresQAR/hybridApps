@@ -20,3 +20,6 @@ class Contador {
     this.label.innerText = this.cant
   }
 }
+
+const con1 = new Contador()
+const con2 = new Contador()
